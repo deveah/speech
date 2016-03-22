@@ -156,9 +156,27 @@ struct phenotype **create_generation(unsigned int phenotype_count)
     sizeof(struct phenotype *) * phenotype_count);
 
   for (i = 0; i < phenotype_count; i++) {
-    generation[i] = alloc_phenotype();
+    generation[i] = create_random_phenotype();
   }
 
   return generation;
+}
+
+/*
+ *  create_random_phenotype() -- creates a phenotype whose chromosomes are
+ *  filled with random (uniformly distributed in the [-2.0f, 2.0f) range) data;
+ *  @return {struct phenotype *} -- the created phenotype.
+ */
+struct phenotype *create_random_phenotype(void)
+{
+  unsigned int i;
+
+  struct phenotype *p = alloc_phenotype();
+
+  for (i = 0; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
+    p->coefficient[i] = 4.0f * ((float)(rand() % 10000) / 10000.0f) - 2.0f;
+  }
+
+  return p;
 }
 

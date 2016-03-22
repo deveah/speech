@@ -49,3 +49,6 @@ void sort_population_by_fitness(struct phenotype **population,
 struct phenotype *combine_phenotypes(struct phenotype *a, struct phenotype *b);
 
 struct phenotype **create_generation(unsigned int phenotype_count);
+
+struct phenotype *create_random_phenotype(void);
+

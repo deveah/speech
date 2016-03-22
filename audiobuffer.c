@@ -1,6 +1,6 @@
 
 /*
- *  speech.c ~ speech synthesis toy project
+ *  audiobuffer.c ~ speech synthesis toy project
  *
  *  Copyright (c) 2016, Vlad Dumitru <dalv.urtimud@gmail.com>
  *
@@ -23,42 +23,33 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-
-#include <sndfile.h>
 
 #include "audiobuffer.h"
-#include "synth.h"
-#include "genetic.h"
-#include "speech.h"
 
-int main(int argc, char **argv)
+/*
+ *  alloc_buffer() -- allocates an audio_buffer structure, given an initial
+ *  number of frames it contains.
+ *  @arg {unsigned int} length      -- buffer length (in frames);
+ *  @return {struct audio_buffer *} -- the allocated audio buffer.
+ */
+struct audio_buffer *alloc_buffer(unsigned int length)
 {
-  (void) argc;
-  (void) argv;
+  struct audio_buffer *buf = (struct audio_buffer*) malloc(sizeof(struct audio_buffer));
+  buf->data = (float*) malloc(sizeof(float) * length);
+  buf->length = length;
 
-  SF_INFO sfinfo;
-  SNDFILE *out;
-  struct audio_buffer *buf = NULL;
+  return buf;
+}
 
-  sfinfo.samplerate = SAMPLE_RATE;
-  sfinfo.channels = 1;
-  sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
-
-  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
-  /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
-  /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
-  /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
-  /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
-  /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
-
-  out = sf_open("out.wav", SFM_WRITE, &sfinfo);
-  sf_write_float(out, buf->data, buf->length);
-
-  free_buffer(buf);
-  sf_close(out);
-  return 0;
+/*
+ *  free_buffer() -- frees a given buffer and its contents;
+ *  @arg {struct audio_buffer *} -- the buffer in question;
+ *  @return {void}.
+ */
+void free_buffer(struct audio_buffer *buf)
+{
+  free(buf->data);
+  free(buf);
 }
 

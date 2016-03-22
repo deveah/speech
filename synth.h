@@ -1,6 +1,6 @@
 
 /*
- *  speech.c ~ speech synthesis toy project
+ *  synth.h ~ speech synthesis toy project
  *
  *  Copyright (c) 2016, Vlad Dumitru <dalv.urtimud@gmail.com>
  *
@@ -23,42 +23,13 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#pragma once
 
-#include <sndfile.h>
+#define SAMPLE_RATE 44100
 
-#include "audiobuffer.h"
-#include "synth.h"
-#include "genetic.h"
-#include "speech.h"
+struct audio_buffer *generate_base_speech_signal(float frequency,
+                                                 unsigned int duration);
 
-int main(int argc, char **argv)
-{
-  (void) argc;
-  (void) argv;
-
-  SF_INFO sfinfo;
-  SNDFILE *out;
-  struct audio_buffer *buf = NULL;
-
-  sfinfo.samplerate = SAMPLE_RATE;
-  sfinfo.channels = 1;
-  sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
-
-  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
-  /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
-  /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
-  /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
-  /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
-  /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
-
-  out = sf_open("out.wav", SFM_WRITE, &sfinfo);
-  sf_write_float(out, buf->data, buf->length);
-
-  free_buffer(buf);
-  sf_close(out);
-  return 0;
-}
+void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
+                            unsigned int start_frame, unsigned int end_frame);
 

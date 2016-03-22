@@ -1,6 +1,6 @@
 
 /*
- *  speech.c ~ speech synthesis toy project
+ *  genetic.h ~ speech synthesis toy project
  *
  *  Copyright (c) 2016, Vlad Dumitru <dalv.urtimud@gmail.com>
  *
@@ -23,42 +23,26 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#pragma once
 
-#include <sndfile.h>
+#define PHENOTYPE_CHROMOSOME_COUNT 5
 
-#include "audiobuffer.h"
-#include "synth.h"
-#include "genetic.h"
-#include "speech.h"
+struct phenotype {
+  float coefficient[PHENOTYPE_CHROMOSOME_COUNT];
+  float fitness;
+};
 
-int main(int argc, char **argv)
-{
-  (void) argc;
-  (void) argv;
+struct phenotype *alloc_phenotype(void);
 
-  SF_INFO sfinfo;
-  SNDFILE *out;
-  struct audio_buffer *buf = NULL;
+void free_phenotype(struct phenotype *p);
 
-  sfinfo.samplerate = SAMPLE_RATE;
-  sfinfo.channels = 1;
-  sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
+float calculate_phenotype_fitness(struct phenotype *p);
 
-  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
-  /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
-  /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
-  /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
-  /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
-  /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
+void fill_population_fitness(struct phenotype **population,
+                             unsigned int population_count);
 
-  out = sf_open("out.wav", SFM_WRITE, &sfinfo);
-  sf_write_float(out, buf->data, buf->length);
+int compare_fitness(const void *a, const void *b);
 
-  free_buffer(buf);
-  sf_close(out);
-  return 0;
-}
+void sort_population_by_fitness(struct phenotype **population,
+                                unsigned int population_count);
 

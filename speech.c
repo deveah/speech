@@ -38,7 +38,7 @@
  */
 struct phenotype *alloc_phenotype(void)
 {
-  int i;
+  unsigned int i;
   struct phenotype *p = (struct phenotype*) malloc(sizeof(struct phenotype));
   
   for (i = 0; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
@@ -88,6 +88,36 @@ void fill_population_fitness(struct phenotype **population,
   for (i = 0; i < population_count; i++) {
     population[i]->fitness = calculate_phenotype_fitness(population[i]);
   }
+}
+
+/*
+ *  compare_fitness() -- compares two phenotypes by their fitness; this
+ *  function is only used internally by `sort_population_by_fitness';
+ *  @arg {const void *} a -- first phenotype to compare;
+ *  @arg {const void *} b -- second phenotype to compare;
+ *  @return {int}         -- comparison result (less than, equal to, or greater
+ *                           than zero).
+ */
+int compare_fitness(const void *a, const void *b)
+{
+  struct phenotype *p_a = (struct phenotype *)a,
+                   *p_b = (struct phenotype *)b;
+
+  return (p_a->fitness - p_b->fitness);
+}
+
+/*
+ *  sort_population_by_fitness() -- sorts a population array by its individuals'
+ *  fitness, in descending order;
+ *  @arg {struct phenotype **} population -- the population array to be sorted;
+ *  @arg {unsigned int} population_count  -- number of individuals in
+ *                                           population array;
+ *  @return {void}.
+ */
+void sort_population_by_fitness(struct phenotype **population,
+                                unsigned int population_count)
+{
+  qsort(population, population_count, sizeof(struct phenotype *), compare_fitness);
 }
 
 /*

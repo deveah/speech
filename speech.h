@@ -48,6 +48,11 @@ float calculate_phenotype_fitness(struct phenotype *p);
 void fill_population_fitness(struct phenotype **population,
                              unsigned int population_count);
 
+int compare_fitness(const void *a, const void *b);
+
+void sort_population_by_fitness(struct phenotype **population,
+                                unsigned int population_count);
+
 struct audio_buffer *alloc_buffer(unsigned int length);
 
 void free_buffer(struct audio_buffer *buf);

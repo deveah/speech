@@ -95,6 +95,9 @@ void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
   printf("   a0 = %f\n", a0);
   printf("   a1 = %f\n", a1);
   printf("   a2 = %f\n", a2);
+  printf("b0/a0 = %f\n", b0 / a0);
+  printf("a1/a0 = %f\n", a1 / a0);
+  printf("a2/a0 = %f\n", a2 / a0);
   printf("-----\n");
 
   for (i = start_frame; i < end_frame; i++) {

@@ -116,3 +116,30 @@ void sort_population_by_fitness(struct phenotype **population,
   qsort(population, population_count, sizeof(struct phenotype *), compare_fitness);
 }
 
+/*
+ *  combine_phenotypes() -- combines two phenotypes by randomly taking
+ *  chromosomes from each, and creates a new phenotype; please note that this
+ *  uses the `rand' function, thus raising the need for setting a random seed
+ *  on program initialization; also, please note that the created phenotype
+ *  is allocated here, thus it is necessary to handle its destruction separately;
+ *  @arg {struct phenotype *} a  -- first phenotype to combine;
+ *  @arg {struct phenotype *} b  -- second phenotype to combine;
+ *  @result {struct phenotype *} -- resulting phenotype.
+ */
+struct phenotype *combine_phenotypes(struct phenotype *a, struct phenotype *b)
+{
+  unsigned int i;
+
+  struct phenotype *result = alloc_phenotype();
+
+  for (i = 0; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
+    if (rand() % 100 > 50) {
+      result->coefficient[i] = a->coefficient[i];
+    } else {
+      result->coefficient[i] = b->coefficient[i];
+    }
+  }
+
+  return result;
+}
+

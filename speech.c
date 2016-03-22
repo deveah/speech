@@ -52,11 +52,42 @@ struct phenotype *alloc_phenotype(void)
 
 /*
  *  free_phenotype() -- frees a given phenotype structure;
- *  @arg {struct phenotype *} -- the phenotype structure in question.
+ *  @arg {struct phenotype *} p -- the phenotype structure in question.
  */
 void free_phenotype(struct phenotype *p)
 {
   free(p);
+}
+
+/*
+ *  calculate_phenotype_fitness() -- calculates the fitness of a given phenotype;
+ *  for now just a placeholder;
+ *  @arg {struct phenotype *} p -- the phenotype in question;
+ *  @return {float}             -- the phenotype's fitness.
+ */
+float calculate_phenotype_fitness(struct phenotype *p)
+{
+  (void) p;
+
+  return 1.0f;
+}
+
+/*
+ *  fill_population_fitness() -- traverses an entire population of phenotypes
+ *  and calculates each individual's fitness, filling it in its respective
+ *  field;
+ *  @arg {struct phenotype **} population -- the array of individuals;
+ *  @arg {unsigned int} population_count  -- number of individuals in array;
+ *  @return {void}.
+ */
+void fill_population_fitness(struct phenotype **population,
+                             unsigned int population_count)
+{
+  unsigned int i;
+
+  for (i = 0; i < population_count; i++) {
+    population[i]->fitness = calculate_phenotype_fitness(population[i]);
+  }
 }
 
 /*

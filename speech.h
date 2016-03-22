@@ -43,6 +43,11 @@ struct phenotype *alloc_phenotype(void);
 
 void free_phenotype(struct phenotype *p);
 
+float calculate_phenotype_fitness(struct phenotype *p);
+
+void fill_population_fitness(struct phenotype **population,
+                             unsigned int population_count);
+
 struct audio_buffer *alloc_buffer(unsigned int length);
 
 void free_buffer(struct audio_buffer *buf);

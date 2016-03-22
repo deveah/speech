@@ -143,3 +143,22 @@ struct phenotype *combine_phenotypes(struct phenotype *a, struct phenotype *b)
   return result;
 }
 
+/*
+ *  create_generation() -- creates a generation of phenotypes;
+ *  @arg {unsigned int} phenotype_count -- number of phenotypes in generation;
+ *  @return {struct phenotype **}       -- the generated array of phenotypes.
+ */
+struct phenotype **create_generation(unsigned int phenotype_count)
+{
+  unsigned int i;
+
+  struct phenotype **generation = (struct phenotype **)malloc(
+    sizeof(struct phenotype *) * phenotype_count);
+
+  for (i = 0; i < phenotype_count; i++) {
+    generation[i] = alloc_phenotype();
+  }
+
+  return generation;
+}
+

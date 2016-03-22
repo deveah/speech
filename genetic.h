@@ -47,3 +47,5 @@ void sort_population_by_fitness(struct phenotype **population,
                                 unsigned int population_count);
 
 struct phenotype *combine_phenotypes(struct phenotype *a, struct phenotype *b);
+
+struct phenotype **create_generation(unsigned int phenotype_count);

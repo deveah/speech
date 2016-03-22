@@ -39,11 +39,11 @@
  */
 struct audio_buffer *alloc_buffer(unsigned int length)
 {
-    struct audio_buffer *buf = (struct audio_buffer*) malloc(sizeof(struct audio_buffer));
-    buf->data = (float*) malloc(sizeof(float) * length);
-    buf->length = length;
+  struct audio_buffer *buf = (struct audio_buffer*) malloc(sizeof(struct audio_buffer));
+  buf->data = (float*) malloc(sizeof(float) * length);
+  buf->length = length;
 
-    return buf;
+  return buf;
 }
 
 /*
@@ -53,8 +53,8 @@ struct audio_buffer *alloc_buffer(unsigned int length)
  */
 void free_buffer(struct audio_buffer *buf)
 {
-    free(buf->data);
-    free(buf);
+  free(buf->data);
+  free(buf);
 }
 
 /*
@@ -67,16 +67,16 @@ void free_buffer(struct audio_buffer *buf)
 struct audio_buffer *generate_base_speech_signal(float frequency,
                                                  unsigned int frame_count)
 {
-    unsigned int i;
-    unsigned int period = SAMPLE_RATE / frequency;
+  unsigned int i;
+  unsigned int period = SAMPLE_RATE / frequency;
 
-    struct audio_buffer *buf = alloc_buffer(frame_count);
+  struct audio_buffer *buf = alloc_buffer(frame_count);
 
-    for (i = 0; i < frame_count; i++) {
-        buf->data[i] = (float)((i % period) < (period / 4)) - 0.5f;
-    }
+  for (i = 0; i < frame_count; i++) {
+      buf->data[i] = (float)((i % period) < (period / 4)) - 0.5f;
+  }
 
-    return buf;
+  return buf;
 }
 
 /*
@@ -98,80 +98,80 @@ struct audio_buffer *generate_base_speech_signal(float frequency,
 void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
                             unsigned int start_frame, unsigned int end_frame)
 {
-    unsigned int i;
-    float y0 = 0.0f,    /* current value of the filter's output */
-          y1 = 0.0f,    /* previous value of the filter's output */
-          y2 = 0.0f;    /* second previous value of the filter's output */
-    float w0 = 0.0f;    /* the filter's angular frequency */
-    float alpha = 0.0f; /* intermediate parameter; see below */
-    float a0 = 0.0f,    /* filter parameters */
-          a1 = 0.0f,
-          a2 = 0.0f,
-          b0 = 0.0f;
+  unsigned int i;
+  float y0 = 0.0f,    /* current value of the filter's output */
+        y1 = 0.0f,    /* previous value of the filter's output */
+        y2 = 0.0f;    /* second previous value of the filter's output */
+  float w0 = 0.0f;    /* the filter's angular frequency */
+  float alpha = 0.0f; /* intermediate parameter; see below */
+  float a0 = 0.0f,    /* filter parameters */
+        a1 = 0.0f,
+        a2 = 0.0f,
+        b0 = 0.0f;
 
     /*  first pass -- formant f1 */
-    w0 = 2.0 * M_PI * (f1 / (float)SAMPLE_RATE);
-    alpha = sinf(w0) * 0.1f;
-    b0 = (1.0f - cosf(w0)) / 2.0f;
-    a0 = 1.0f + alpha;
-    a1 = -2.0 * cosf(w0);
-    a2 = 1.0f - alpha;
+  w0 = 2.0 * M_PI * (f1 / (float)SAMPLE_RATE);
+  alpha = sinf(w0) * 0.1f;
+  b0 = (1.0f - cosf(w0)) / 2.0f;
+  a0 = 1.0f + alpha;
+  a1 = -2.0 * cosf(w0);
+  a2 = 1.0f - alpha;
 
-    for (i = start_frame; i < end_frame; i++) {
-        y0 = (b0 / a0) * buf->data[i]
-           - (a1 / a0) * y1
-           - (a2 / a0) * y2;
-        y2 = y1;
-        y1 = y0;
+  for (i = start_frame; i < end_frame; i++) {
+      y0 = (b0 / a0) * buf->data[i]
+         - (a1 / a0) * y1
+         - (a2 / a0) * y2;
+      y2 = y1;
+      y1 = y0;
 
-        buf->data[i] = y0;
-    }
+      buf->data[i] = y0;
+  }
 
 
     /*  second pass -- formant f2 */
-    w0 = 2.0 * M_PI * (f2 / (float)SAMPLE_RATE);
-    alpha = sinf(w0) * 0.001f;
-    b0 = (1.0f - cosf(w0)) / 2.0f;
-    a0 = 1.0f + alpha;
-    a1 = -2.0 * cosf(w0);
-    a2 = 1.0f - alpha;
+  w0 = 2.0 * M_PI * (f2 / (float)SAMPLE_RATE);
+  alpha = sinf(w0) * 0.001f;
+  b0 = (1.0f - cosf(w0)) / 2.0f;
+  a0 = 1.0f + alpha;
+  a1 = -2.0 * cosf(w0);
+  a2 = 1.0f - alpha;
 
-    for (i = start_frame; i < end_frame; i++) {
-        y0 = (b0 / a0) * buf->data[i]
-           - (a1 / a0) * y1
-           - (a2 / a0) * y2;
-        y2 = y1;
-        y1 = y0;
+  for (i = start_frame; i < end_frame; i++) {
+      y0 = (b0 / a0) * buf->data[i]
+         - (a1 / a0) * y1
+         - (a2 / a0) * y2;
+      y2 = y1;
+      y1 = y0;
 
-        buf->data[i] = y0;
-    }
+      buf->data[i] = y0;
+  }
 }
 
 int main(int argc, char **argv)
 {
-    (void) argc;
-    (void) argv;
+  (void) argc;
+  (void) argv;
 
-    SF_INFO sfinfo;
-    SNDFILE *out;
-    struct audio_buffer *buf = NULL;
+  SF_INFO sfinfo;
+  SNDFILE *out;
+  struct audio_buffer *buf = NULL;
 
-    sfinfo.samplerate = SAMPLE_RATE;
-    sfinfo.channels = 1;
-    sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
+  sfinfo.samplerate = SAMPLE_RATE;
+  sfinfo.channels = 1;
+  sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
 
-    buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
-    /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
-    /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
-    /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
-    /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
-    /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
+  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
+  /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
+  /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
+  /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
+  /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
+  /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
 
-    out = sf_open("out.wav", SFM_WRITE, &sfinfo);
-    sf_write_float(out, buf->data, buf->length);
+  out = sf_open("out.wav", SFM_WRITE, &sfinfo);
+  sf_write_float(out, buf->data, buf->length);
 
-    free_buffer(buf);
-    sf_close(out);
-    return 0;
+  free_buffer(buf);
+  sf_close(out);
+  return 0;
 }
 

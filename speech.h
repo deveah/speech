@@ -28,8 +28,8 @@
 #define SAMPLE_RATE 44100
 
 struct audio_buffer {
-    float *data;
-    int length;
+  float *data;
+  int length;
 };
 
 struct audio_buffer *alloc_buffer(unsigned int length);

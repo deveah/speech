@@ -27,6 +27,7 @@
 #include <math.h>
 
 #include "audiobuffer.h"
+#include "genetic.h"
 #include "synth.h"
 
 /*
@@ -127,6 +128,43 @@ void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
       y1 = y0;
 
       buf->data[i] = y0;
+  }
+}
+
+/*
+ *  process_filter_from_phenotype() -- passws a given audio buffer through a
+ *  filter whose coefficients are taken from a given phenotype;
+ *  @arg {struct phenotype *} phenotype -- the phenotype from which to take the
+ *                                         filter coefficients;
+ *  @arg {struct audio_buffer *} buf    -- the audio buffer to be processed;
+ *  @arg {unsigned int} start_frame     -- the frame index from which the
+ *                                         processing begins;
+ *  @arg {unsigned int} end_frame       -- the last frame index to be processed;
+ *  @return {void}.
+ */
+void process_filter_from_phenotype(struct phenotype *p,
+                                   struct audio_buffer *buf,
+                                   unsigned int start_frame,
+                                   unsigned int end_frame)
+{
+  unsigned int i, j, k;
+  float memory[PHENOTYPE_CHROMOSOME_COUNT] = {0.0f};
+  float temp = 0.0f;
+
+  for (i = start_frame; i < end_frame; i++) {
+    temp = p->coefficient[0] * buf->data[i];
+
+    for (j = 1; j < PHENOTYPE_CHROMOSOME_COUNT; j++) {
+      temp += p->coefficient[i] * memory[i];
+
+      buf->data[i] = temp;
+
+      for (k = PHENOTYPE_CHROMOSOME_COUNT; k > 0; k--) {
+        memory[k] = memory[k - 1];
+      }
+
+      memory[0] = temp;
+    }
   }
 }
 

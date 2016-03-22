@@ -25,6 +25,9 @@
 
 #pragma once
 
+#include "audiobuffer.h"
+#include "genetic.h"
+
 #define SAMPLE_RATE 44100
 
 struct audio_buffer *generate_base_speech_signal(float frequency,
@@ -33,3 +36,7 @@ struct audio_buffer *generate_base_speech_signal(float frequency,
 void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
                             unsigned int start_frame, unsigned int end_frame);
 
+void process_filter_from_phenotype(struct phenotype *p,
+                                   struct audio_buffer *buf,
+                                   unsigned int start_frame,
+                                   unsigned int end_frame);

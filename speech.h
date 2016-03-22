@@ -27,10 +27,21 @@
 
 #define SAMPLE_RATE 44100
 
+#define PHENOTYPE_CHROMOSOME_COUNT 5
+
+struct phenotype {
+  float coefficient[PHENOTYPE_CHROMOSOME_COUNT];
+  float fitness;
+};
+
 struct audio_buffer {
   float *data;
   int length;
 };
+
+struct phenotype *alloc_phenotype(void);
+
+void free_phenotype(struct phenotype *p);
 
 struct audio_buffer *alloc_buffer(unsigned int length);
 

@@ -32,6 +32,34 @@
 #include "speech.h"
 
 /*
+ *  alloc_phenotype() -- allocates a phenotype structure and fills it with
+ *  default data;
+ *  @return {struct phenotype *} -- the allocated phenotype structure.
+ */
+struct phenotype *alloc_phenotype(void)
+{
+  int i;
+  struct phenotype *p = (struct phenotype*) malloc(sizeof(struct phenotype));
+  
+  for (i = 0; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
+    p->coefficient[i] = 0.0f;
+  }
+
+  p->fitness = 0.0f;
+
+  return p;
+}
+
+/*
+ *  free_phenotype() -- frees a given phenotype structure;
+ *  @arg {struct phenotype *} -- the phenotype structure in question.
+ */
+void free_phenotype(struct phenotype *p)
+{
+  free(p);
+}
+
+/*
  *  alloc_buffer() -- allocates an audio_buffer structure, given an initial
  *  number of frames it contains.
  *  @arg {unsigned int} length      -- buffer length (in frames);
@@ -116,6 +144,14 @@ void process_formant_filter(struct audio_buffer *buf, float f1, float f2,
   a0 = 1.0f + alpha;
   a1 = -2.0 * cosf(w0);
   a2 = 1.0f - alpha;
+
+  printf("   w0 = %f\n", w0);
+  printf("alpha = %f\n", alpha);
+  printf("   b0 = %f\n", b0);
+  printf("   a0 = %f\n", a0);
+  printf("   a1 = %f\n", a1);
+  printf("   a2 = %f\n", a2);
+  printf("-----\n");
 
   for (i = start_frame; i < end_frame; i++) {
       y0 = (b0 / a0) * buf->data[i]

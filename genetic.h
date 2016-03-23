@@ -52,3 +52,5 @@ struct phenotype **create_generation(unsigned int phenotype_count);
 
 struct phenotype *create_random_phenotype(void);
 
+void run_generation(void);
+

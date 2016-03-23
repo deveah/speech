@@ -1,0 +1,104 @@
+==1587== Memcheck, a memory error detector
+==1587== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==1587== Memcheck, a memory error detector
+==1587== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==1587== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==1587== Command: ./speech
+==1587== 
+==1587== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==1587== Command: ./speech
+==1587== 
+==1587== Invalid read of size 4
+==1587== Invalid read of size 4
+==1587==    at 0x400C30: compare_fitness (genetic.c:102)
+==1587==    by 0x55D2381: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    at 0x400C30: compare_fitness (genetic.c:102)
+==1587==    by 0x55D2381: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D264E: qsort_r (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D264E: qsort_r (in /usr/lib/libc-2.22.so)
+==1587==    by 0x400C7D: sort_population_by_fitness (genetic.c:116)
+==1587==    by 0x400C7D: sort_population_by_fitness (genetic.c:116)
+==1587==    by 0x400E33: run_generation (genetic.c:185)
+==1587==    by 0x400E33: run_generation (genetic.c:185)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587==  Address 0x6ef7364 is 4 bytes after a block of size 800 alloc'd
+==1587==  Address 0x6ef7364 is 4 bytes after a block of size 800 alloc'd
+==1587==    at 0x4C28C10: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1587==    at 0x4C28C10: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1587==    by 0x400D4B: create_generation (genetic.c:155)
+==1587==    by 0x400D4B: create_generation (genetic.c:155)
+==1587==    by 0x400E21: run_generation (genetic.c:184)
+==1587==    by 0x400E21: run_generation (genetic.c:184)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587== 
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587== 
+==1587== Invalid read of size 4
+==1587== Invalid read of size 4
+==1587==    at 0x400C39: compare_fitness (genetic.c:102)
+==1587==    by 0x55D2381: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    at 0x400C39: compare_fitness (genetic.c:102)
+==1587==    by 0x55D2381: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D20F7: msort_with_tmp.part.0 (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D264E: qsort_r (in /usr/lib/libc-2.22.so)
+==1587==    by 0x55D264E: qsort_r (in /usr/lib/libc-2.22.so)
+==1587==    by 0x400C7D: sort_population_by_fitness (genetic.c:116)
+==1587==    by 0x400E33: run_generation (genetic.c:185)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587==    by 0x400C7D: sort_population_by_fitness (genetic.c:116)
+==1587==    by 0x400E33: run_generation (genetic.c:185)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587==  Address 0x6ef736c is 12 bytes after a block of size 800 alloc'd
+==1587==  Address 0x6ef736c is 12 bytes after a block of size 800 alloc'd
+==1587==    at 0x4C28C10: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1587==    at 0x4C28C10: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1587==    by 0x400D4B: create_generation (genetic.c:155)
+==1587==    by 0x400D4B: create_generation (genetic.c:155)
+==1587==    by 0x400E21: run_generation (genetic.c:184)
+==1587==    by 0x400E21: run_generation (genetic.c:184)
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587== 
+==1587==    by 0x400FD1: main (speech.c:63)
+==1587== 
+==1587== 
+==1587== 
+==1587== HEAP SUMMARY:
+==1587==     in use at exit: 0 bytes in 0 blocks
+==1587==   total heap usage: 106 allocs, 106 frees, 944,956 bytes allocated
+==1587== 
+==1587== All heap blocks were freed -- no leaks are possible
+==1587== 
+==1587== For counts of detected and suppressed errors, rerun with: -v
+==1587== ERROR SUMMARY: 4 errors from 2 contexts (suppressed: 0 from 0)
+==1587== HEAP SUMMARY:
+==1587==     in use at exit: 0 bytes in 0 blocks
+==1587==   total heap usage: 106 allocs, 106 frees, 944,956 bytes allocated
+==1587== 
+==1587== All heap blocks were freed -- no leaks are possible
+==1587== 
+==1587== For counts of detected and suppressed errors, rerun with: -v
+==1587== ERROR SUMMARY: 4 errors from 2 contexts (suppressed: 0 from 0)

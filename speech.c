@@ -60,6 +60,8 @@ int main(int argc, char **argv)
   out = sf_open("out.wav", SFM_WRITE, &sfinfo);
   sf_write_float(out, buf->data, buf->length);
 
+  run_generation();
+
   free_buffer(buf);
   sf_close(out);
   return 0;

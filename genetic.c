@@ -23,6 +23,7 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "genetic.h"
@@ -65,7 +66,7 @@ float calculate_phenotype_fitness(struct phenotype *p)
 {
   (void) p;
 
-  return 1.0f;
+  return (float)(rand() % 10000) / 10000.0f;
 }
 
 /*
@@ -99,7 +100,15 @@ int compare_fitness(const void *a, const void *b)
   struct phenotype *p_a = (struct phenotype *)a,
                    *p_b = (struct phenotype *)b;
 
-  return (p_a->fitness - p_b->fitness);
+  float res = p_b->fitness - p_a->fitness;
+
+  if (res > 0.0001f)
+    return 1;
+
+  if (res < -0.0001f)
+    return -1;
+
+  return 0;
 }
 
 /*
@@ -178,5 +187,24 @@ struct phenotype *create_random_phenotype(void)
   }
 
   return p;
+}
+
+void run_generation(void) {
+  unsigned int i;
+
+  struct phenotype **generation = create_generation(100);
+
+  fill_population_fitness(generation, 100);
+  sort_population_by_fitness(generation, 100);
+
+  printf("best 10 phenotypes:\n");
+  for (i = 0; i < 10; i++) {
+    printf("%i: %f\n", i, generation[i]->fitness);
+  }
+
+  for (i = 0; i < 100; i++) {
+    free_phenotype(generation[i]);
+  }
+  free(generation);
 }
 

@@ -126,6 +126,34 @@ void sort_population_by_fitness(struct phenotype **population,
 }
 
 /*
+ *  get_best_of_random_two() -- randomly picks two phenotypes from the
+ *  population, and returns the best of those two picked;
+ *  @arg {struct phenotype **} population -- population to choose from;
+ *  @arg {unsigned int} population_count  -- number of phenotypes in population;
+ *  @return {struct phenotype *}          -- the best of two phenotypes.
+ */
+struct phenotype *get_best_of_random_two(struct phenotype **population,
+                                         unsigned int population_count)
+{
+  unsigned int a, b;
+  struct phenotype *p_a, *p_b;
+
+  do {
+    a = rand() % population_count;
+    b = rand() % population_count;
+  } while (a == b);
+
+  p_a = population[a];
+  p_b = population[b];
+
+  if (p_a->fitness > p_b->fitness) {
+    return p_a;
+  }
+
+  return p_b;
+}
+
+/*
  *  combine_phenotypes() -- combines two phenotypes by randomly taking
  *  chromosomes from each, and creates a new phenotype; please note that this
  *  uses the `rand' function, thus raising the need for setting a random seed
@@ -193,13 +221,12 @@ void run_generation(void) {
   unsigned int i;
 
   struct phenotype **generation = create_generation(100);
+  struct phenotype *tournament_winners[20];
 
   fill_population_fitness(generation, 100);
-  sort_population_by_fitness(generation, 100);
-
-  printf("best 10 phenotypes:\n");
-  for (i = 0; i < 10; i++) {
-    printf("%i: %f\n", i, generation[i]->fitness);
+  for (i = 0; i < 20; i++) {
+    tournament_winners[i] = get_best_of_random_two(generation, 100);
+    printf("%i: %f\n", i, tournament_winners[i]->fitness);
   }
 
   for (i = 0; i < 100; i++) {

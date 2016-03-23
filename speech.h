@@ -25,3 +25,7 @@
 
 #pragma once
 
+#include "audiobuffer.h"
+
+extern struct audio_buffer *reference_buffer;
+

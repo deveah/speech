@@ -35,6 +35,8 @@
 #include "genetic.h"
 #include "speech.h"
 
+struct audio_buffer *reference_buffer = NULL;
+
 int main(int argc, char **argv)
 {
   (void) argc;
@@ -42,7 +44,7 @@ int main(int argc, char **argv)
 
   srand(time(NULL));
 
-  SF_INFO sfinfo;
+  /*SF_INFO sfinfo;
   SNDFILE *out;
   struct audio_buffer *buf = NULL;
 
@@ -50,20 +52,24 @@ int main(int argc, char **argv)
   sfinfo.channels = 1;
   sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
 
-  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE * 5);
-  /* a */ process_formant_filter(buf, 700.0f, 1300.0f,               0,     SAMPLE_RATE);
-  /* e */ process_formant_filter(buf, 400.0f, 1950.0f,     SAMPLE_RATE, 2 * SAMPLE_RATE);
-  /* i */ process_formant_filter(buf, 300.0f, 2200.0f, 2 * SAMPLE_RATE, 3 * SAMPLE_RATE);
-  /* o */ process_formant_filter(buf, 400.0f, 1000.0f, 3 * SAMPLE_RATE, 4 * SAMPLE_RATE);
-  /* u */ process_formant_filter(buf, 350.0f,  850.0f, 4 * SAMPLE_RATE, 5 * SAMPLE_RATE);
+  buf = generate_base_speech_signal(200.0f, SAMPLE_RATE);
+  process_formant_filter(buf, 700.0f, 1300.0f, 0, SAMPLE_RATE);
 
   out = sf_open("out.wav", SFM_WRITE, &sfinfo);
-  sf_write_float(out, buf->data, buf->length);
+  sf_write_float(out, buf->data, buf->length);*/
+
+  SF_INFO sfinfo;
+  SNDFILE *reference_file;
+
+  reference_buffer = alloc_buffer(SAMPLE_RATE);
+
+  reference_file = sf_open("reference_a.wav", SFM_READ, &sfinfo);
+  sf_read_float(reference_file, reference_buffer->data, SAMPLE_RATE);
 
   run_generation();
 
-  free_buffer(buf);
-  sf_close(out);
+  free_buffer(reference_buffer);
+  sf_close(reference_file);
   return 0;
 }
 

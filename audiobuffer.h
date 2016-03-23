@@ -27,10 +27,12 @@
 
 struct audio_buffer {
   float *data;
-  int length;
+  unsigned int length;
 };
 
 struct audio_buffer *alloc_buffer(unsigned int length);
 
 void free_buffer(struct audio_buffer *buf);
+
+float compare_audio_buffers(struct audio_buffer *a, struct audio_buffer *b);
 

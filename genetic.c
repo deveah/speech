@@ -26,7 +26,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "audiobuffer.h"
 #include "genetic.h"
+#include "speech.h"
+#include "synth.h"
 
 /*
  *  alloc_phenotype() -- allocates a phenotype structure and fills it with
@@ -57,16 +60,23 @@ void free_phenotype(struct phenotype *p)
 }
 
 /*
- *  calculate_phenotype_fitness() -- calculates the fitness of a given phenotype;
- *  for now just a placeholder;
+ *  calculate_phenotype_fitness() -- calculates the fitness of a given phenotype
+ *  by synthesizing a signal, passing it through a filter whose coefficients are
+ *  taken from the phenotype's genes, and then calculating the mean square error
+ *  between the reference buffer and the synthesized buffer;
  *  @arg {struct phenotype *} p -- the phenotype in question;
  *  @return {float}             -- the phenotype's fitness.
  */
 float calculate_phenotype_fitness(struct phenotype *p)
 {
-  (void) p;
+  float fitness = 0.0f;
+  struct audio_buffer *buf = generate_base_speech_signal(400.0f, SAMPLE_RATE);
 
-  return (float)(rand() % 10000) / 10000.0f;
+  process_filter_from_phenotype(p, buf, 0, SAMPLE_RATE);
+  fitness = compare_audio_buffers(buf, reference_buffer);
+
+  free_buffer(buf);
+  return fitness;
 }
 
 /*
@@ -147,10 +157,10 @@ struct phenotype *get_best_of_random_two(struct phenotype **population,
   p_b = population[b];
 
   if (p_a->fitness > p_b->fitness) {
-    return p_a;
+    return p_b;
   }
 
-  return p_b;
+  return p_a;
 }
 
 /*

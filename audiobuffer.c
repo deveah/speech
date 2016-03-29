@@ -74,14 +74,14 @@ float compare_audio_buffers(struct audio_buffer *a, struct audio_buffer *b)
   }
 
   for (i = 0; i < a->length; i++) {
-    if (a->data[i] > 1.0f ||
+    /*if (a->data[i] > 1.0f ||
         a->data[i] < -1.0f) {
       printf("wat <%p>@%i\n", (void *)a, i);
     }
     if (b->data[i] > 1.0f ||
         b->data[i] < -1.0f) {
       printf("wat <%p>@%i\n", (void *)b, i);
-    }
+    }*/
 
     mse += (a->data[i] - b->data[i]) * (a->data[i] - b->data[i]);
   }

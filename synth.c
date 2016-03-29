@@ -152,9 +152,9 @@ void process_filter_from_phenotype(struct phenotype *p,
   float temp = 0.0f;
 
   for (i = start_frame; i < end_frame; i++) {
-    temp = p->coefficient[0] * buf->data[i];
+    temp = p->coefficient[1] * buf->data[i];
 
-    for (j = 1; j < PHENOTYPE_CHROMOSOME_COUNT; j++) {
+    for (j = 2; j < PHENOTYPE_CHROMOSOME_COUNT; j++) {
       temp += p->coefficient[j] * memory[j];
 
       buf->data[i] = temp;

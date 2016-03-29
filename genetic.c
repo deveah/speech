@@ -70,7 +70,7 @@ void free_phenotype(struct phenotype *p)
 float calculate_phenotype_fitness(struct phenotype *p)
 {
   float fitness = 0.0f;
-  struct audio_buffer *buf = generate_base_speech_signal(400.0f, SAMPLE_RATE);
+  struct audio_buffer *buf = generate_base_speech_signal(p->coefficient[0], SAMPLE_RATE);
 
   process_filter_from_phenotype(p, buf, 0, SAMPLE_RATE);
   fitness = compare_audio_buffers(buf, reference_buffer);
@@ -220,7 +220,9 @@ struct phenotype *create_random_phenotype(void)
 
   struct phenotype *p = alloc_phenotype();
 
-  for (i = 0; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
+	p->coefficient[0] = 50.0f + (float)(rand() % 350);
+
+  for (i = 1; i < PHENOTYPE_CHROMOSOME_COUNT; i++) {
     p->coefficient[i] = 4.0f * ((float)(rand() % 10000) / 10000.0f) - 2.0f;
   }
 
